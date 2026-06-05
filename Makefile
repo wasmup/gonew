@@ -17,6 +17,6 @@ inspect:
 	go tool nm $(which gonew)
 
 release:
-	go build -trimpath -ldflags "-s -w -X main.Version=v1.0.0"
-	git tag v1.0.0
+	go install -trimpath -ldflags "-s -w -X main.Version=v1.0.1"
+	git tag v1.0.1
 	git push --tags

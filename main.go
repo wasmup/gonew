@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"syscall"
 
 	_ "embed"
 )
@@ -80,9 +81,17 @@ func main() {
 		os.Exit(1)
 	}
 	cmd := exec.Command(args[0], append(args[1:], ".", filename)...)
-	err = cmd.Run()
-	if err != nil {
-		slog.Error(`open editor failed`, `dir`, dir, `filename`, filename, `err`, err)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} // the editor becomes its own process group, so signals to gonew won’t kill it.
+	// err = cmd.Run()
+	if err := cmd.Start(); err != nil {
+		slog.Error("start editor failed", "err", err)
+		os.Exit(1)
+	}
+	if err := cmd.Wait(); err != nil {
+		slog.Error("editor exited with error", "err", err)
 		os.Exit(1)
 	}
 	slog.Info("project created", "name", name, "path", dir+"/"+name)

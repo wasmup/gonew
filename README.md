@@ -1,10 +1,21 @@
 # gonew
 
-`gonew` is a lightweight CLI tool for quickly creating numbered Go project directories with automatic `go mod init`, optional `git init`, and editor launch.
+gonew creates numbered Go project directories, runs go mod init, optionally initialises git, writes a starter main.go, and opens your editor.
+
 
 It is designed for developers who frequently create small, sequential Go projects (e.g., exercises, experiments, daily coding tasks).
 
 ---
+
+## Why This Exists
+
+This tool is especially useful for:
+
+- coding exercises
+- daily Go practice
+- kata directories
+- quick prototypes
+- sequential experiment folders
 
 ## ✨ Features
 
@@ -46,21 +57,22 @@ go build -trimpath -ldflags "-X main.Version=$(git describe --tags --always)"
 
 ---
 
-## 🚀 Usage
+## 🚀 Simple Usage
 
 ```bash
 gonew
+```
 
+## Help
+
+```bash
 gonew --help
-
-# or
-gonew [flags]
 ```
 
 ### Example
 
 ```bash
-gonew -prefix ex -n 10 -git
+gonew -prefix day -n 101 -git
 ```
 
 ---
@@ -113,10 +125,9 @@ go6
 > Gaps are never reused.
 
 The next number is calculated as:
-
-\[
-\text{next} = \max(\text{start}, \max(existing)+1)
-\]
+```
+next = max(start, existing+1)
+```
 
 ---
 
